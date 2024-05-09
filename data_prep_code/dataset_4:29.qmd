@@ -10,11 +10,11 @@ library(dplyr)
 # Data import 
 
 ```{r}
-data_3_admi <- read.csv("mimic-iii-clinical-database-1.4/ADMISSIONS.csv")
-data_3_ICU <- read.csv("mimic-iii-clinical-database-1.4/ICUSTAYS.csv")
-data_3_Patient <- read_csv("mimic-iii-clinical-database-1.4/PATIENTS.csv")
-data_3_diag_ICD <- read.csv("mimic-iii-clinical-database-1.4/DIAGNOSES_ICD.csv")
-data_3_ICD <- read_csv("mimic-iii-clinical-database-1.4/D_ICD_DIAGNOSES.csv") 
+data_3_admi <- read_csv("MIMIC-3/ADMISSIONS.csv")
+data_3_ICU <- read.csv("MIMIC-3/ICUSTAYS.csv")
+data_3_Patient <- read_csv("MIMIC-3/PATIENTS.csv")
+data_3_diag_ICD <- read.csv("MIMIC-3/DIAGNOSES_ICD.csv")
+data_3_ICD <- read_csv("MIMIC-3/D_ICD_DIAGNOSES.csv") 
 ```
 
 
