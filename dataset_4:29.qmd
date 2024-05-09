@@ -1,0 +1,103 @@
+---
+title: "data set final"
+format: pdf
+---
+
+```{r}
+library(dplyr)
+```
+
+# Data import 
+
+```{r}
+data_3_admi <- read.csv("mimic-iii-clinical-database-1.4/ADMISSIONS.csv")
+data_3_ICU <- read.csv("mimic-iii-clinical-database-1.4/ICUSTAYS.csv")
+data_3_Patient <- read_csv("mimic-iii-clinical-database-1.4/PATIENTS.csv")
+data_3_diag_ICD <- read.csv("mimic-iii-clinical-database-1.4/DIAGNOSES_ICD.csv")
+data_3_ICD <- read_csv("mimic-iii-clinical-database-1.4/D_ICD_DIAGNOSES.csv") 
+```
+
+
+
+# III 
+
+## Step 1 we only need people alive 
+
+```{r}
+suject_ID_alive <- data_3_Patient[data_3_Patient$EXPIRE_FLAG == 0, "SUBJECT_ID"]
+
+```
+
+
+## Step 2 take The LOS info and connect info out 
+
+```{r}
+infor_los <-data_3_ICU[,c("LOS","SUBJECT_ID","HADM_ID","ICUSTAY_ID" )]
+```
+
+
+## Step 3 we use left join to make the LOS info with people alive
+
+```{r}
+infor_los_alive <- left_join(suject_ID_alive, infor_los, 
+                       by = "SUBJECT_ID") |>
+  na.omit()
+
+```
+
+## Step 4 Remove LOS > 60
+
+```{r}
+infor_los_alive_leq60 <- infor_los_alive[infor_los_alive$LOS <= 60,]
+```
+
+
+## Step 5 Find all the ICD 9 code 
+
+```{r}
+ICD9_SPinal_COrd <- as.numeric(c(sprintf("8060%d", 0:9),sprintf("806%d", 10:39),
+                                 "8064","8065","80660", "80661", "80662", "80669",
+                                 "80670", "80671", "80672", "80679","8068","8069",
+                                 sprintf("9520%d", 0:9),sprintf("952%d",10:19),
+                                 "9522","9523","9524","9528","9529","7674","3361",
+                                 "3369","7429","1922"))
+library(dplyr)
+datatest1 <- data_3_diag_ICD |>
+  filter(ICD9_CODE %in% ICD9_SPinal_COrd)
+
+Subject_ID_IDC9 <- unique(datatest1$SUBJECT_ID)
+```
+
+
+```{r}
+infor_los_alive_leq60 |>
+  filter(SUBJECT_ID %in% Subject_ID_IDC9)
+```
+
+# IV 
+
+```{r}
+data4_ICU <- read_csv("mimic-iv-2.2/icu/icustays.csv")
+```
+
+
+
+```{r}
+data4_patient <- read_csv("mimic-iv-2.2/hosp/diagnoses_icd.csv")
+datatest2 <- data4_patient |>
+  filter(icd_code %in% ICD9_SPinal_COrd)
+
+Subject_ID_IDC9_4 <- unique(datatest2$subject_id)
+
+
+```
+
+
+
+```{r}
+
+
+```
+
+
+
